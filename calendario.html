@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Cronograma de Actividades - Intranet PPR</title>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  background: #f4f6f8;
+  color: #222;
+}
+
+.header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 24px;
+  background: linear-gradient(90deg,#0b4f84,#083b63);
+  color:white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.logo img { height:56px; }
+
+.usuario {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.usuario .texto { 
+  display:flex; 
+  align-items:center;
+  gap:12px; 
+}
+.usuario #nombreUsuario { font-weight:600; color:#fff; }
+
+.logout {
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: #fff;
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:0.85rem;
+  transition: background 0.3s ease;
+}
+.logout:hover { background: rgba(255,255,255,0.2); }
+
+.nav { background:#fff; border-bottom:1px solid #e6e9ee; }
+.nav ul { 
+  display:flex; 
+  list-style:none; 
+  gap:6px; 
+  padding:8px 20px; 
+}
+.nav a { 
+  display:block; 
+  padding:10px 16px; 
+  color:#0b4f84; 
+  text-decoration:none; 
+  border-radius:8px; 
+  font-weight:600; 
+}
+.nav a.activo, .nav a:hover { background: #e9f2ff; }
+
+.contenido {
+  padding:30px;
+  max-width:1100px;
+  margin:0 auto;
+}
+
+.flex-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.calendario {
+  flex: 1 1 480px;
+  min-width: 300px;
+}
+
+iframe {
+  width: 100%;
+  height: 700px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.lista-escuelas {
+  flex: 1 1 450px;  /* Aumentado el ancho base para mayor espacio */
+  min-width: 350px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  max-height: 700px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.lista-escuelas h2 {
+  margin-bottom: 15px;
+  color: #0b4f84;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* ancho uniforme para columnas */
+}
+
+th, td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e6e9ee;
+  vertical-align: top;
+  white-space: nowrap; /* evitar salto de línea */
+  overflow: hidden;
+  text-overflow: ellipsis; /* "..." si texto largo */
+}
+
+th {
+  background-color: #f0f4fb;
+  color: #0b4f84;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.no-escuelas {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  padding: 20px 0;
+}
+
+h1 {
+  color: #0b4f84;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 800px) {
+  .flex-container {
+    flex-direction: column;
+  }
+  iframe {
+    height: 400px;
+  }
+  .lista-escuelas {
+    max-height: none;
+    margin-top: 20px;
+    flex-basis: auto;
+    min-width: auto;
+  }
+  table {
+    table-layout: auto;
+  }
+  th, td {
+    white-space: normal; /* permitir salto de línea en móvil */
+  }
+}
+
+  </style>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="IMÁGENES/OSC.png" alt="Logo OSC" onerror="this.src='IMÁGENES/default.png'">
+    </div>
+
+    <div class="usuario" id="usuarioHeader">
+      <div class="texto">
+        <span id="nombreUsuario">Usuario</span>
+        <button id="btnLogout" class="logout" aria-label="Cerrar sesión">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <ul>
+      <li><a href="inicio.html">Inicio</a></li>
+      <li><a href="calendario.html" class="activo">Calendario</a></li>
+      <li><a href="escuelas.html">Escuelas</a></li>
+      <li><a href="#">Reportes</a></li>
+    </ul>
+  </nav>
+
+  <main class="contenido">
+    <h1>Cronograma de Actividades</h1>
+
+    <div class="flex-container">
+      <div class="calendario">
+        <iframe 
+          src="https://calendar.google.com/calendar/embed?src=c_21750b7d8a1a6a80725249a98aa039593d25efcaf35b48c294a4a16411f7dc25%40group.calendar.google.com&ctz=America%2FChihuahua" 
+          scrolling="no" 
+          title="Calendario de actividades">
+        </iframe>
+      </div>
+
+      <div class="lista-escuelas" aria-label="Lista de escuelas programadas">
+        <h2>Agenda Semanal Supera</h2>
+        <table id="tablaEscuelas">
+          <thead>
+            <tr>
+              <th>Día</th>
+              <th>Escuela</th>
+              <th>Hora</th>
+            </tr>
+          </thead>
+          <tbody id="escuelasBody">
+            <tr><td colspan="3" class="no-escuelas">Cargando escuelas...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function parseFechaDDMMYYYY(fechaStr) {
+      const [dia, mes, anio] = fechaStr.split('/');
+      return new Date(anio, mes - 1, dia);
+    }
+
+    function getMondayAndSunday(date) {
+      const day = date.getDay();
+      const diffMonday = (day === 0 ? -6 : 1) - day;
+      const monday = new Date(date);
+      monday.setDate(date.getDate() + diffMonday);
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6);
+      return { monday, sunday };
+    }
+
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+      if (!usuario?.nombre || !usuario?.correo) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      document.getElementById('nombreUsuario').textContent = usuario.nombre;
+
+      document.getElementById('btnLogout').addEventListener('click', () => {
+        if (window.google?.accounts?.id) {
+          try {
+            window.google.accounts.id.disableAutoSelect();
+          } catch (e) { console.warn(e); }
+        }
+
+        localStorage.removeItem('usuario');
+        window.location.href = 'index.html';
+      });
+
+      const sheetUrl = 'https://opensheet.elk.sh/1kjEK6zGaZn_KkjfCJJ1lGYhvjZubwA3DFcZ10s0wdkg/CRONOGRAMA';
+
+      fetch(sheetUrl)
+        .then(res => res.json())
+        .then(data => {
+          const hoy = new Date();
+          const { monday, sunday } = getMondayAndSunday(hoy);
+
+          const agrupados = {};
+
+          data.forEach(item => {
+            if (!item['Fecha de inicio']) return;
+
+            const fechaInicio = parseFechaDDMMYYYY(item['Fecha de inicio']);
+            if (isNaN(fechaInicio)) return;
+
+            if (fechaInicio >= monday && fechaInicio <= sunday) {
+              const key = fechaInicio.toDateString();
+              if (!agrupados[key]) agrupados[key] = [];
+
+              agrupados[key].push({
+                escuela: item.Escuela,
+                hora: item.Hora,
+                fecha: fechaInicio
+              });
+            }
+          });
+
+          const tbody = document.getElementById('escuelasBody');
+          tbody.innerHTML = '';
+
+          if (Object.keys(agrupados).length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" class="no-escuelas">No hay escuelas programadas para esta semana.</td></tr>`;
+            return;
+          }
+
+          Object.keys(agrupados).sort((a,b) => new Date(a) - new Date(b)).forEach(fechaKey => {
+            const eventos = agrupados[fechaKey];
+            const opcionesDia = { weekday: 'long', day: 'numeric' };
+
+            let diaFormateado = eventos[0].fecha.toLocaleDateString('es-ES', opcionesDia);
+            diaFormateado = capitalizeFirstLetter(diaFormateado);
+
+            eventos.forEach((evento, idx) => {
+              const tr = document.createElement('tr');
+
+              const tdDia = document.createElement('td');
+              tdDia.textContent = idx === 0 ? diaFormateado : '';
+              tdDia.style.fontWeight = '600';
+              tr.appendChild(tdDia);
+
+              const tdEscuela = document.createElement('td');
+              tdEscuela.textContent = evento.escuela;
+              tr.appendChild(tdEscuela);
+
+              const tdHora = document.createElement('td');
+              tdHora.textContent = evento.hora;
+              tr.appendChild(tdHora);
+
+              tbody.appendChild(tr);
+            });
+          });
+        })
+        .catch(() => {
+          const tbody = document.getElementById('escuelasBody');
+          tbody.innerHTML = `<tr><td colspan="3" class="no-escuelas">Error cargando las escuelas.</td></tr>`;
+        });
+    });
+  </script>
+</body>
+</html>

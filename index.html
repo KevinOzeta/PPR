@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Login - Intranet PPR</title>
+  <link rel="stylesheet" href="StyleInicio.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <main class="ContenedorInicio">
+    <div class="LogoDonante">
+      <img src="IMÁGENES/OSC.png" alt="Logo OSC" />
+    </div>
+    
+    <section class="InicioDeSesión">
+      <h2>BIENVENIDO/A AL PROGRAMA DE PREVENCIÓN DE RIESGOS 2025</h2>
+      <h5>POR FAVOR INICIA SESIÓN</h5>
+      
+      <!-- Google Identity -->
+      <div id="g_id_onload"
+           data-client_id="116652954626-9jgfslbbc91tne9aasu3b5gshk2ju62r.apps.googleusercontent.com"
+           data-callback="handleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
+    </section>
+    
+    <section class="LogosDonantes">
+  <p>Programa financiado por:</p>
+  <div class="logos">
+    <img src="IMÁGENES/FECHAC.png" alt="Donantes" />
+    
+  </div>
+</section>
+
+
+    <footer class="footer">
+      © 2025 Programa de Prevención de Riesgos
+    </footer>
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>

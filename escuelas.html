@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Escuelas - Intranet PPR</title>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f6f8;
+      color: #222;
+      padding-bottom: 80px;
+    }
+
+    .header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding: 3px 24px;
+      background: linear-gradient(90deg,#0b4f84,#083b63);
+      color:white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    .logo img { height:56px; }
+
+    .usuario {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .usuario .texto { 
+      display:flex; 
+      align-items:center;
+      gap:12px; 
+    }
+    .usuario #nombreUsuario { font-weight:600; color:#fff; }
+
+    .logout {
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: #fff;
+      padding:6px 10px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:0.85rem;
+      transition: background 0.3s ease;
+    }
+    .logout:hover { background: rgba(255,255,255,0.2); }
+
+    .nav { background:#fff; border-bottom:1px solid #e6e9ee; }
+    .nav ul { display:flex; list-style:none; gap:6px; padding:6px 20px; }
+    .nav a { 
+      display:block; 
+      padding:10px 16px; 
+      color:#0b4f84; 
+      text-decoration:none; 
+      border-radius:8px; 
+      font-weight:600; 
+    }
+    .nav a.activo, .nav a:hover { background: #e9f2ff; }
+
+    .contenido {
+      padding:30px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    .mapaGoogle {
+      margin-top: 20px;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .mapaGoogle iframe {
+      width: 100%;
+      height: 500px;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(90deg, rgba(11, 79, 132, 0.9), rgba(8, 59, 99, 0.9));
+      padding: 8px 20px;
+      z-index: 100;
+    }
+
+    .footer .LogosDonantes {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer .logos {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .footer .logos img {
+      height: 28px;
+      filter: brightness(0) invert(1);
+    }
+
+    .footer .logos p {
+      font-size: 0.85rem;
+      color: #fff;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="IMÁGENES/OSC.png" alt="Logo OSC" onerror="this.src='IMÁGENES/default.png'">
+    </div>
+
+    <div class="usuario" id="usuarioHeader">
+      <div class="texto">
+        <span id="nombreUsuario">Usuario</span>
+        <button id="btnLogout" class="logout" aria-label="Cerrar sesión">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <ul>
+      <li><a href="inicio.html">Inicio</a></li>
+      <li><a href="calendario.html">Calendario</a></li>
+      <li><a href="escuelas.html" class="activo">Escuelas</a></li>
+      <li><a href="#">Reportes</a></li>
+    </ul>
+  </nav>
+
+  <main class="contenido">
+    <h1>📍 Mapa de Escuelas</h1>
+    <p>Consulta la ubicación de las escuelas secundarias en Chihuahua.</p>
+
+    <div class="mapaGoogle">
+      <iframe 
+        src="https://www.google.com/maps/d/u/0/embed?mid=19GTdBOxaUA9MtWYuNLWVBATBFsOyFxQ&ehbc=2E312F&noprof=1" 
+        allowfullscreen 
+        loading="lazy">
+      </iframe>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <section class="LogosDonantes">
+      <div class="logos">
+        <p>Programa financiado por:</p>
+        <img src="IMÁGENES/FECHAC.png" alt="Donantes" />
+      </div>
+    </section>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+      if (!usuario?.nombre || !usuario?.correo) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      document.getElementById('nombreUsuario').textContent = usuario.nombre;
+
+      document.getElementById('btnLogout').addEventListener('click', () => {
+        if (window.google?.accounts?.id) {
+          try {
+            window.google.accounts.id.disableAutoSelect();
+          } catch (e) {
+            console.warn(e);
+          }
+        }
+
+        localStorage.removeItem('usuario');
+        window.location.href = 'index.html';
+      });
+    });
+  </script>
+</body>
+</html>

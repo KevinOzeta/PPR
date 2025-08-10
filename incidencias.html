@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Simple</title>
+  <style>
+    #chat { border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll; }
+    #input { width: 80%; }
+    #send { width: 18%; }
+  </style>
+</head>
+<body>
+  <h2>Chat</h2>
+  <div id="chat"></div>
+  <input type="text" id="input" placeholder="Escribe tu mensaje...">
+  <button id="send">Enviar</button>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const send = document.getElementById('send');
+
+    send.onclick = () => {
+      const msg = input.value.trim();
+      if (msg) {
+        const p = document.createElement('p');
+        p.textContent = "Tú: " + msg;
+        chat.appendChild(p);
+        input.value = "";
+        chat.scrollTop = chat.scrollHeight;
+      }
+    };
+  </script>
+</body>
+</html>

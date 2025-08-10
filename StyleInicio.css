@@ -1,0 +1,145 @@
+
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== BODY ===== */
+body {
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    display: flex;
+    justify-content: center;     
+    align-items: center;         
+    height: 100vh;
+    background-image: url(IMÁGENES/FondoInicio.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.ContenedorInicio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 50px 60px;
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    max-width: 500px; /* Ancho fijo elegante */
+    width: 90%;       /* Adaptable en móvil */
+    text-align: center;
+}
+
+/* ===== LOGO ===== */
+.LogoDonante {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.LogoDonante img {
+    max-width: 180px;
+    height: auto;
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.6));
+    transition: transform 0.3s ease;
+}
+
+.LogoDonante img:hover {
+    transform: scale(1.05);
+}
+
+/* ===== TITULOS ===== */
+.InicioDeSesión h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    color: #e0e0e0;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+}
+
+.InicioDeSesión h5 {
+    font-weight: 500;
+    margin-bottom: 35px;
+    color: #cfd8dc;
+    letter-spacing: 0.7px;
+}
+
+/* ===== GOOGLE SIGN-IN ===== */
+.g_id_signin {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.g_id_signin > div {
+    width: 100% !important;
+    max-width: 280px !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    margin-top: 40px;
+    font-size: 0.8rem;
+    color: #bbb;
+    letter-spacing: 0.5px;
+    user-select: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .ContenedorInicio {
+        padding: 30px 20px;
+    }
+    .InicioDeSesión h2 {
+        font-size: 1.6rem;
+    }
+    .InicioDeSesión h5 {
+        font-size: 1rem;
+    }
+}
+
+/* Logos de donantes */
+.LogosDonantes {
+  margin-top: 45px;
+  text-align: center;
+  color: #ccc;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  user-select: none;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+
+.LogosDonantes p {
+  margin-bottom: 20px;
+}
+
+.LogosDonantes .logos {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.LogosDonantes img {
+  max-height: 80px;
+  max-width: 150px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.LogosDonantes img:hover {
+  transform: scale(1.1);
+}
