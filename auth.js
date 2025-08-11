@@ -3,7 +3,8 @@
 // Lista blanca de correos permitidos
 const allowedUsers = [
   "coordinaciongeneral@superaisp.org",
-  "Sistematizacion@supera.mx"
+  "Sistematizacion@supera.mx",
+  "kevinozeta@gmail.com"
   // añade más correos autorizados
 ];
 
