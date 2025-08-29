@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard - Intranet PPR</title>
+    <link rel="icon" type="image/x-icon" href="IMÁGENES/DIF.png" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        /* HEADER */
+        .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: linear-gradient(90deg, #0b4f84, #083b63);
+    color: white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+        .logo img {
+            height: 56px;
+        }
+
+        .usuario {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .usuario #nombreUsuario {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .logout {
+            background: rgba(255, 255, 255, 0.12);
+            border: none;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+
+        .logout:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* NAV */
+.nav {
+    position: fixed;
+    top: 72px; /* altura del header */
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: #fff;
+    border-bottom: 1px solid #e6e9ee;
+}
+
+.nav ul {
+    display: flex;
+    list-style: none;
+    gap: 6px;
+    padding: 8px 20px;
+}
+
+.nav a {
+    display: block;
+    padding: 10px 16px;
+    color: #0b4f84;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.nav a.activo,
+.nav a:hover {
+    background: #e9f2ff;
+}
+
+
+        /* CONTENIDO */
+        .contenido {
+    padding-top: 140px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+        h1 {
+            text-align: center;
+            margin-bottom: 22px;
+            color: #083b63;
+        }
+
+        .section-title {
+            margin: 26px 0 12px;
+            color: #083b63;
+        }
+
+        /* DASHBOARD BOX */
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .dashboard-box {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        /* CARDS */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        .card h3 {
+            color: #0b4f84;
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .card p {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #083b63;
+            margin-bottom: 8px;
+        }
+
+        .card small {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .card h4 {
+            margin: 0 0 10px;
+            color: #0b4f84;
+            font-weight: 700;
+        }
+
+        /* TABLA */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e6e9ee;
+        }
+
+        th {
+            background: #f0f4fb;
+            color: #0b4f84;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f9fcff;
+        }
+
+        button.ver-expediente {
+            background: #0b4f84;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        button.ver-expediente:hover {
+            background: #083b63;
+        }
+
+        /* FILTROS */
+        #filtros {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        #filtros label {
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        /* MODAL */
+        #modalCarga {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0b4f84;
+            border-radius: 50%;
+            margin: 0 auto 12px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* MODAL ALUMNO */
+        #modalAlumno {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        #modalAlumno .modal-inner {
+            background: #fff;
+            padding: 35px;
+            border-radius: 16px;
+            width: 600px;
+            max-width: 95%;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            position: relative;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        #modalAlumno button.cerrarModal {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            border: none;
+            background: #eee;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #modalAlumno h2 {
+            color: #083b63;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #e6e9ee;
+            padding-bottom: 10px;
+        }
+
+        #modalAlumno p {
+            margin: 6px 0;
+            color: #333;
+        }
+
+        #modalAlumno ul {
+            margin: 0 0 12px 20px;
+            padding: 0;
+            list-style: disc;
+            color: #444;
+        }
+    </style>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="auth.js"></script>
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbzK_hkWCUOgDBSFG_zKRAIOxCDyWrGfyUVqqF4a4ik4Z0URa_gWEP3ZENZaudF2gfbmvg/exec";
+
+        const isTruthy = v => v !== null && v !== undefined && String(v).trim() !== "";
+
+        function gradoYGrupo(clave) {
+            if (!clave) return {
+                grado: null,
+                grupo: '—'
+            };
+            const m = String(clave).match(/-(\d)([A-Z])/i);
+            return {
+                grado: m ? m[1] : null,
+                grupo: m ? m[2] : '—'
+            };
+        }
+
+        function normalizaGenero(sexo) {
+            const s = String(sexo || "").toLowerCase();
+            if (s.startsWith('m')) return 'Masculino';
+            if (s.startsWith('f')) return 'Femenino';
+            return '—';
+        }
+
+        let todosAlumnos = [];
+
+        function renderTablaAlumnos(alumnos) {
+            const tbody = document.getElementById('tablaAlumnos');
+            tbody.innerHTML = '';
+            alumnos.forEach(a => {
+                const {
+                    grado,
+                    grupo
+                } = gradoYGrupo(a["Clave"]);
+                const genero = normalizaGenero(a["Sexo"]);
+                const talleres = a["Total de talleres"] || 0;
+                const evaluacion = a["evaluacion"] || 'No';
+                const medicion = a["medicion"] || 'No';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+      <td>${a["Nombre"]||'—'}</td>
+      <td>${a["Escuela"]||'—'}</td>
+      <td>${grado?grado+'°':'—'}</td>
+      <td>${grupo}</td>
+      <td>${genero}</td>
+      <td>${talleres}</td>
+      <td>${evaluacion}</td>
+      <td>${medicion}</td>
+      <td><button class="ver-expediente" onclick='verDetalleAlumno(${JSON.stringify({escuela:a["Escuela"],grado,clave:a["Clave"]}).replace(/'/g,"&#39;")})'>Expediente</button></td>
+    `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function actualizarCards(alumnos) {
+            let total = 0,
+                M = 0,
+                F = 0;
+            let g1 = {
+                    total: 0,
+                    M: 0,
+                    F: 0
+                },
+                g2 = {
+                    total: 0,
+                    M: 0,
+                    F: 0
+                },
+                g3 = {
+                    total: 0,
+                    M: 0,
+                    F: 0
+                };
+
+            alumnos.forEach(a => {
+                const {
+                    grado
+                } = gradoYGrupo(a["Clave"]);
+                const genero = normalizaGenero(a["Sexo"]);
+                total++;
+                if (genero === 'Masculino') M++;
+                if (genero === 'Femenino') F++;
+                if (grado === '1') {
+                    g1.total++;
+                    if (genero === 'Masculino') g1.M++;
+                    if (genero === 'Femenino') g1.F++;
+                }
+                if (grado === '2') {
+                    g2.total++;
+                    if (genero === 'Masculino') g2.M++;
+                    if (genero === 'Femenino') g2.F++;
+                }
+                if (grado === '3') {
+                    g3.total++;
+                    if (genero === 'Masculino') g3.M++;
+                    if (genero === 'Femenino') g3.F++;
+                }
+            });
+
+            document.getElementById('totalAlumnos').textContent = total;
+            document.getElementById('totalMujeres').textContent = F;
+            document.getElementById('totalHombres').textContent = M;
+            document.getElementById('grado1').textContent = g1.total;
+            document.getElementById('grado1M').textContent = g1.M;
+            document.getElementById('grado1F').textContent = g1.F;
+            document.getElementById('grado2').textContent = g2.total;
+            document.getElementById('grado2M').textContent = g2.M;
+            document.getElementById('grado2F').textContent = g2.F;
+            document.getElementById('grado3').textContent = g3.total;
+            document.getElementById('grado3M').textContent = g3.M;
+            document.getElementById('grado3F').textContent = g3.F;
+        }
+
+        async function loadDashboard() {
+            try {
+                const resp = await fetch(`${GAS_URL}?action=getAlumnos`);
+                const alumnos = await resp.json();
+                if (!Array.isArray(alumnos) || alumnos.length === 0) throw new Error("No hay datos");
+                todosAlumnos = alumnos;
+                actualizarCards(todosAlumnos);
+                renderTablaAlumnos(todosAlumnos);
+
+                // filtros
+                const selectEscuela = document.getElementById('filtroEscuela');
+                const escuelas = [...new Set(todosAlumnos.map(a => a["Escuela"] || "Sin escuela"))].sort();
+                selectEscuela.innerHTML = '<option value="todas">Todas</option>' + escuelas.map(e => `<option value="${e}">${e}</option>`).join('');
+                selectEscuela.addEventListener('change', aplicarFiltro);
+                document.getElementById('filtroGrado').addEventListener('change', aplicarFiltro);
+            } catch (err) {
+                console.error(err);
+                alert("Error cargando datos de alumnos.");
+            }
+        }
+
+        function aplicarFiltro() {
+            const escuela = document.getElementById('filtroEscuela').value;
+            const gradoFiltro = document.getElementById('filtroGrado').value;
+            const filtrados = todosAlumnos.filter(a => {
+                const {
+                    grado
+                } = gradoYGrupo(a["Clave"]);
+                const esc = a["Escuela"] || "Sin escuela";
+                return (escuela === 'todas' || esc === escuela) && (gradoFiltro === 'todos' || String(grado) === gradoFiltro);
+            });
+
+            renderTablaAlumnos(filtrados);
+
+            // Totales filtrados
+            let total = filtrados.length,
+                M = 0,
+                F = 0,
+                talleres = 0;
+            filtrados.forEach(a => {
+                const genero = normalizaGenero(a["Sexo"]);
+                if (genero === 'Masculino') M++;
+                if (genero === 'Femenino') F++;
+                talleres += Number(a["Total de talleres"]) || 0;
+            });
+            document.getElementById('filtroTotal').textContent = total;
+            document.getElementById('filtroMujeres').textContent = F;
+            document.getElementById('filtroHombres').textContent = M;
+            document.getElementById('filtroTalleres').textContent = talleres;
+        }
+
+        function verDetalleAlumno({
+            escuela,
+            grado,
+            clave
+        }) {
+            const alumno = todosAlumnos.find(a => a["Clave"] === clave);
+            if (!alumno) {
+                alert("Alumno no encontrado");
+                return;
+            }
+
+            const {
+                grado: g,
+                grupo
+            } = gradoYGrupo(alumno["Clave"]);
+            document.getElementById("modalNombre").textContent = alumno["Nombre"] || "—";
+            document.getElementById("modalEscuela").textContent = `${alumno["Escuela"]||"—"} / ${g||"—"}°${grupo}`;
+
+            // Talleres reales de la hoja
+            const talleres = [];
+            Object.keys(alumno).forEach(key => {
+                if (key.toLowerCase().startsWith("taller") && alumno[key] && alumno[key].toString().toLowerCase().includes("sí")) {
+                    talleres.push(key); // Nombre real de columna
+                }
+            });
+            const ul = document.getElementById("modalTalleres");
+            ul.innerHTML = talleres.length ? talleres.map(t => `<li>${t}</li>`).join('') : "<li>No registrados</li>";
+
+            // Evaluación
+            const evalDx = alumno["evaluacion"] ? (alumno["evaluacion"] + (alumno["dx_evaluacion"] ? ` (${alumno["dx_evaluacion"]})` : "")) : "No";
+            document.getElementById("modalEvaluacion").textContent = evalDx;
+
+            // Medición
+            const medDx = alumno["medicion"] ? (alumno["medicion"] + (alumno["dx_medicion"] ? ` (${alumno["dx_medicion"]})` : "")) : "No";
+            document.getElementById("modalMedicion").textContent = medDx;
+
+            // Mostrar modal
+            document.getElementById("modalAlumno").style.display = "flex";
+        }
+
+        function cerrarModalAlumno() {
+            document.getElementById("modalAlumno").style.display = "none";
+        }
+
+        document.addEventListener("DOMContentLoaded", loadDashboard);
+    </script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo"><img src="IMÁGENES/OSC.png" alt="Logo OSC" onerror="this.src='IMÁGENES/default.png'"></div>
+        <div class="usuario">
+            <span id="nombreUsuario">Usuario</span>
+            <button id="btnLogout" class="logout">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="inicio.html">Inicio</a></li>
+            <li><a href="calendario.html">Calendario</a></li>
+            <li><a href="vinculacion.html">Vinculación</a></li>
+            <li><a href="dashboard.html" class="activo">Dashboard</a></li>
+        </ul>
+    </nav>
+
+    <main class="contenido">
+        <h1>SEGUIMIENTO GENERAL</h1>
+
+        <div class="dashboard-container">
+            <div class="dashboard-box">
+                <div class="card">
+                    <h3>Total alumnos</h3>
+                    <p id="totalAlumnos">0</p>
+                    <small><strong>Mujeres:</strong> <span id="totalMujeres">0</span> | <strong>Hombres:</strong> <span id="totalHombres">0</span></small>
+                </div>
+                <div class="card">
+                    <h3>Alumnos en 1° Grado</h3>
+                    <p id="grado1">0</p>
+                    <small><strong>Mujeres:</strong> <span id="grado1F">0</span> | <strong>Hombres:</strong> <span id="grado1M">0</span></small>
+                </div>
+                <div class="card">
+                    <h3>Alumnos en 2° Grado</h3>
+                    <p id="grado2">0</p>
+                    <small><strong>Mujeres:</strong> <span id="grado2F">0</span> | <strong>Hombres:</strong> <span id="grado2M">0</span></small>
+                </div>
+                <div class="card">
+                    <h3>Alumnos en 3° Grado</h3>
+                    <p id="grado3">0</p>
+                    <small><strong>Mujeres:</strong> <span id="grado3F">0</span> | <strong>Hombres:</strong> <span id="grado3M">0</span></small>
+                </div>
+            </div>
+            <div class="dashboard-box" id="cardsAsociaciones"></div>
+        </div>
+
+        <h2 class="section-title">Filtros</h2>
+        <div id="filtros">
+            <label>Escuela: <select id="filtroEscuela"></select></label>
+            <label>Grado: <select id="filtroGrado">
+                    <option value="todos">Todos</option>
+                    <option value="1">1°</option>
+                    <option value="2">2°</option>
+                    <option value="3">3°</option>
+                </select></label>
+        </div>
+        <p>Total alumnos filtrados: <span id="filtroTotal">0</span> | Mujeres: <span id="filtroMujeres">0</span> | Hombres: <span id="filtroHombres">0</span> | Talleres: <span id="filtroTalleres">0</span></p>
+
+        <h2 class="section-title">Listado de alumnos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Escuela</th>
+                    <th>Grado</th>
+                    <th>Grupo</th>
+                    <th>Sexo</th>
+                    <th>Talleres</th>
+                    <th>Evaluación</th>
+                    <th>Medición</th>
+                    <th>Detalle</th>
+                </tr>
+            </thead>
+            <tbody id="tablaAlumnos"></tbody>
+        </table>
+    </main>
+
+    <!-- MODAL ALUMNO -->
+    <div id="modalAlumno">
+        <div class="modal-inner">
+            <button class="cerrarModal" onclick="cerrarModalAlumno()">✕</button>
+            <h2>Expediente del Alumno</h2>
+            <div>
+                <p><strong>Nombre:</strong> <span id="modalNombre">—</span></p>
+                <p><strong>Escuela:</strong> <span id="modalEscuela">—</span></p>
+            </div>
+            <hr style="border:none; border-top:1px solid #ddd; margin:15px 0;">
+            <div>
+                <p><strong>Talleres asistidos:</strong></p>
+                <ul id="modalTalleres"></ul>
+            </div>
+            <div>
+                <p><strong>Evaluación psicológica:</strong> <span id="modalEvaluacion">—</span></p>
+                <p><strong>Medición:</strong> <span id="modalMedicion">—</span></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -3,180 +3,60 @@
 <head>
   <meta charset="utf-8" />
   <title>Cronograma de Actividades - Intranet PPR</title>
+  <link rel="icon" type="image/x-icon" href="IMÁGENES/DIF.png" />
   <style>
     * { box-sizing: border-box; margin:0; padding:0; }
-body {
-  font-family: 'Poppins', Arial, sans-serif;
-  background: #f4f6f8;
-  color: #222;
-}
+    body { font-family: 'Poppins', Arial, sans-serif; background: #f4f6f8; color: #222; }
 
-.header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 24px;
-  background: linear-gradient(90deg,#0b4f84,#083b63);
-  color:white;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-}
+    .header { display:flex; justify-content:space-between; align-items:center; padding:12px 24px; background: linear-gradient(90deg,#0b4f84,#083b63); color:white; box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+    .logo img { height:56px; }
+    .usuario { display:flex; align-items:center; gap:12px; }
+    .usuario .texto { display:flex; align-items:center; gap:12px; }
+    .usuario #nombreUsuario { font-weight:600; color:#fff; }
+    .logout { background: rgba(255,255,255,0.12); border: none; color: #fff; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:0.85rem; transition: background 0.3s ease; }
+    .logout:hover { background: rgba(255,255,255,0.2); }
 
-.logo img { height:56px; }
+    .nav { background:#fff; border-bottom:1px solid #e6e9ee; }
+    .nav ul { display:flex; list-style:none; gap:6px; padding:8px 20px; }
+    .nav a { display:block; padding:10px 16px; color:#0b4f84; text-decoration:none; border-radius:8px; font-weight:600; }
+    .nav a.activo, .nav a:hover { background: #e9f2ff; }
 
-.usuario {
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+    .contenido { padding:30px; max-width:1100px; margin:0 auto; }
 
-.usuario .texto { 
-  display:flex; 
-  align-items:center;
-  gap:12px; 
-}
-.usuario #nombreUsuario { font-weight:600; color:#fff; }
+    .agenda-semanal { margin-bottom:20px; background:#fff; border-radius:12px; padding:20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .agenda-semanal h2 { text-align:center; margin-bottom:5px; color:#0b4f84; font-weight:700; font-size:1.5rem; }
+    .agenda-semanal .semana-rango { text-align:center; margin-bottom:15px; color:#0b4f84; font-weight:500; }
 
-.logout {
-  background: rgba(255,255,255,0.12);
-  border: none;
-  color: #fff;
-  padding:6px 10px;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:0.85rem;
-  transition: background 0.3s ease;
-}
-.logout:hover { background: rgba(255,255,255,0.2); }
+    .agenda-semanal table { width:100%; border-collapse: collapse; table-layout: fixed; }
+    .agenda-semanal th, .agenda-semanal td { padding:8px 12px; text-align:center; border-bottom:1px solid #e6e9ee; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .agenda-semanal th { background-color:#f0f4fb; color:#0b4f84; font-weight:600; position:sticky; top:0; z-index:1; }
+    td.actividad { white-space: normal; line-height:1.2em; }
 
-.nav { background:#fff; border-bottom:1px solid #e6e9ee; }
-.nav ul { 
-  display:flex; 
-  list-style:none; 
-  gap:6px; 
-  padding:8px 20px; 
-}
-.nav a { 
-  display:block; 
-  padding:10px 16px; 
-  color:#0b4f84; 
-  text-decoration:none; 
-  border-radius:8px; 
-  font-weight:600; 
-}
-.nav a.activo, .nav a:hover { background: #e9f2ff; }
+    .day-group-0 td { background-color: #e9f5ff; }
+    .day-group-1 td { background-color: #ffffff; }
 
-.contenido {
-  padding:30px;
-  max-width:1100px;
-  margin:0 auto;
-}
+    .no-escuelas { color:#666; font-style:italic; text-align:center; padding:20px 0; }
 
-.flex-container {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
+    .botones-semana { text-align:right; margin-top:10px; }
+    .botones-semana button { margin-left:5px; padding:6px 12px; border-radius:6px; border:none; background:#0b4f84; color:#fff; cursor:pointer; transition: background 0.3s; }
+    .botones-semana button:hover { background:#083b63; }
 
-.calendario {
-  flex: 1 1 480px;
-  min-width: 300px;
-}
+    .calendario iframe { width:100%; height:700px; border:none; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-top:20px; }
 
-iframe {
-  width: 100%;
-  height: 700px;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.lista-escuelas {
-  flex: 1 1 450px;  /* Aumentado el ancho base para mayor espacio */
-  min-width: 350px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  max-height: 700px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.lista-escuelas h2 {
-  margin-bottom: 15px;
-  color: #0b4f84;
-  font-weight: 700;
-  font-size: 1.25rem;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; /* ancho uniforme para columnas */
-}
-
-th, td {
-  padding: 8px 12px;
-  text-align: left;
-  border-bottom: 1px solid #e6e9ee;
-  vertical-align: top;
-  white-space: nowrap; /* evitar salto de línea */
-  overflow: hidden;
-  text-overflow: ellipsis; /* "..." si texto largo */
-}
-
-th {
-  background-color: #f0f4fb;
-  color: #0b4f84;
-  font-weight: 600;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.no-escuelas {
-  color: #666;
-  font-style: italic;
-  text-align: center;
-  padding: 20px 0;
-}
-
-h1 {
-  color: #0b4f84;
-  margin-bottom: 20px;
-}
-
-@media (max-width: 800px) {
-  .flex-container {
-    flex-direction: column;
-  }
-  iframe {
-    height: 400px;
-  }
-  .lista-escuelas {
-    max-height: none;
-    margin-top: 20px;
-    flex-basis: auto;
-    min-width: auto;
-  }
-  table {
-    table-layout: auto;
-  }
-  th, td {
-    white-space: normal; /* permitir salto de línea en móvil */
-  }
-}
-
+    @media (max-width: 800px) {
+      .agenda-semanal table { table-layout:auto; }
+      .agenda-semanal th, .agenda-semanal td { white-space:normal; }
+      .calendario iframe { height:400px; }
+      .botones-semana { text-align:right; }
+    }
   </style>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="auth.js"></script>
 </head>
 <body>
   <header class="header">
-    <div class="logo">
-      <img src="IMÁGENES/OSC.png" alt="Logo OSC" onerror="this.src='IMÁGENES/default.png'">
-    </div>
-
+    <div class="logo"><img src="IMÁGENES/OSC.png" alt="Logo OSC" onerror="this.src='IMÁGENES/default.png'"></div>
     <div class="usuario" id="usuarioHeader">
       <div class="texto">
         <span id="nombreUsuario">Usuario</span>
@@ -188,150 +68,177 @@ h1 {
   <nav class="nav">
     <ul>
       <li><a href="inicio.html">Inicio</a></li>
-      <li><a href="calendario.html" class="activo">Calendario</a></li>
-      <li><a href="escuelas.html">Escuelas</a></li>
-      <li><a href="#">Reportes</a></li>
+      <li><a href="vinculacion.html" >Vinculación</a></li>
+       <li><a href="dashboard.html">Seguimiento</a></li>
     </ul>
   </nav>
 
   <main class="contenido">
     <h1>Cronograma de Actividades</h1>
 
-    <div class="flex-container">
-      <div class="calendario">
-        <iframe 
-          src="https://calendar.google.com/calendar/embed?src=c_21750b7d8a1a6a80725249a98aa039593d25efcaf35b48c294a4a16411f7dc25%40group.calendar.google.com&ctz=America%2FChihuahua" 
-          scrolling="no" 
-          title="Calendario de actividades">
-        </iframe>
-      </div>
-
-      <div class="lista-escuelas" aria-label="Lista de escuelas programadas">
-        <h2>Agenda Semanal Supera</h2>
+    <div class="agenda-semanal" aria-label="Agenda Semanal">
+      <h2 id="tituloAgenda">Agenda Semanal de Asociación</h2>
+      <div class="semana-rango" id="rangoSemana">Semana</div>
+      <div style="overflow-x:auto;">
         <table id="tablaEscuelas">
           <thead>
             <tr>
               <th>Día</th>
+              <th>Confirmación</th>
               <th>Escuela</th>
               <th>Hora</th>
+              <th>Actividad</th>
             </tr>
           </thead>
           <tbody id="escuelasBody">
-            <tr><td colspan="3" class="no-escuelas">Cargando escuelas...</td></tr>
+            <tr><td colspan="5" class="no-escuelas">Cargando escuelas...</td></tr>
           </tbody>
         </table>
       </div>
+      <div class="botones-semana">
+        <button id="btnPrevWeek">◀ Semana anterior</button>
+        <button id="btnNextWeek">Semana siguiente ▶</button>
+      </div>
+    </div>
+
+    <div class="calendario">
+      <iframe 
+        src="https://calendar.google.com/calendar/embed?src=c_21750b7d8a1a6a80725249a98aa039593d25efcaf35b48c294a4a16411f7dc25%40group.calendar.google.com&ctz=America%2FChihuahua" 
+        scrolling="no" title="Calendario de actividades">
+      </iframe>
     </div>
   </main>
 
   <script>
-    function parseFechaDDMMYYYY(fechaStr) {
-      const [dia, mes, anio] = fechaStr.split('/');
-      return new Date(anio, mes - 1, dia);
-    }
-
-    function getMondayAndSunday(date) {
-      const day = date.getDay();
-      const diffMonday = (day === 0 ? -6 : 1) - day;
-      const monday = new Date(date);
-      monday.setDate(date.getDate() + diffMonday);
-      const sunday = new Date(monday);
-      sunday.setDate(monday.getDate() + 6);
-      return { monday, sunday };
-    }
-
-    function capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       const usuario = JSON.parse(localStorage.getItem('usuario'));
-
-      if (!usuario?.nombre || !usuario?.correo) {
-        window.location.href = 'index.html';
-        return;
-      }
+      if (!usuario?.nombre || !usuario?.correo) { window.location.href = 'index.html'; return; }
 
       document.getElementById('nombreUsuario').textContent = usuario.nombre;
+      document.getElementById('tituloAgenda').textContent = `Agenda Semanal de ${usuario.asociacion}`;
 
       document.getElementById('btnLogout').addEventListener('click', () => {
-        if (window.google?.accounts?.id) {
-          try {
-            window.google.accounts.id.disableAutoSelect();
-          } catch (e) { console.warn(e); }
-        }
-
-        localStorage.removeItem('usuario');
-        window.location.href = 'index.html';
+        if (window.google?.accounts?.id) { try { window.google.accounts.id.disableAutoSelect(); } catch(e){} }
+        localStorage.removeItem('usuario'); window.location.href = 'index.html';
       });
 
-      const sheetUrl = 'https://opensheet.elk.sh/1kjEK6zGaZn_KkjfCJJ1lGYhvjZubwA3DFcZ10s0wdkg/CRONOGRAMA';
+      const data = await fetchCronograma();
+      function normalize(str) { return str?.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim(); }
+      function capitalizeFirstLetter(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
-      fetch(sheetUrl)
-        .then(res => res.json())
-        .then(data => {
-          const hoy = new Date();
-          const { monday, sunday } = getMondayAndSunday(hoy);
+      let currentMonday = null;
+      function getMondayAndSunday(date) {
+        const monday = new Date(date);
+        const day = monday.getDay();
+        const diff = (day === 0 ? -6 : 1) - day;
+        monday.setDate(monday.getDate() + diff);
+        monday.setHours(0,0,0,0); // inicio de lunes
 
-          const agrupados = {};
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+        sunday.setHours(23,59,59,999); // fin de domingo
 
-          data.forEach(item => {
-            if (!item['Fecha de inicio']) return;
+        return { monday, sunday };
+      }
 
-            const fechaInicio = parseFechaDDMMYYYY(item['Fecha de inicio']);
-            if (isNaN(fechaInicio)) return;
+      function formatSemana(monday, sunday) {
+        if (monday.getMonth() === sunday.getMonth()) {
+          return `del ${monday.getDate()} al ${sunday.getDate()} de ${monday.toLocaleDateString('es-ES', {month:'long'})}`;
+        } else {
+          return `del ${monday.getDate()} de ${monday.toLocaleDateString('es-ES', {month:'long'})} al ${sunday.getDate()} de ${sunday.toLocaleDateString('es-ES', {month:'long'})}`;
+        }
+      }
 
-            if (fechaInicio >= monday && fechaInicio <= sunday) {
-              const key = fechaInicio.toDateString();
-              if (!agrupados[key]) agrupados[key] = [];
+      function renderAgenda(weekMonday) {
+        const { monday, sunday } = getMondayAndSunday(weekMonday);
+        currentMonday = monday;
 
-              agrupados[key].push({
-                escuela: item.Escuela,
-                hora: item.Hora,
-                fecha: fechaInicio
-              });
-            }
-          });
+        document.getElementById('rangoSemana').textContent = formatSemana(monday, sunday);
 
-          const tbody = document.getElementById('escuelasBody');
-          tbody.innerHTML = '';
-
-          if (Object.keys(agrupados).length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" class="no-escuelas">No hay escuelas programadas para esta semana.</td></tr>`;
-            return;
+        const agrupados = {};
+        data.forEach(item => {
+          if (
+  normalize(usuario.asociacion) !== "dif municipal" && 
+  item['asociación'] && 
+  normalize(item['asociación']) !== normalize(usuario.asociacion)
+) {
+  return;
+}
+          const fechaInicio = item.fechaObj;
+          if (!fechaInicio) return;
+          if (fechaInicio >= monday && fechaInicio <= sunday) { // eliminamos exclusión del domingo
+            const key = fechaInicio.toDateString();
+            if (!agrupados[key]) agrupados[key] = [];
+            agrupados[key].push(item);
           }
-
-          Object.keys(agrupados).sort((a,b) => new Date(a) - new Date(b)).forEach(fechaKey => {
-            const eventos = agrupados[fechaKey];
-            const opcionesDia = { weekday: 'long', day: 'numeric' };
-
-            let diaFormateado = eventos[0].fecha.toLocaleDateString('es-ES', opcionesDia);
-            diaFormateado = capitalizeFirstLetter(diaFormateado);
-
-            eventos.forEach((evento, idx) => {
-              const tr = document.createElement('tr');
-
-              const tdDia = document.createElement('td');
-              tdDia.textContent = idx === 0 ? diaFormateado : '';
-              tdDia.style.fontWeight = '600';
-              tr.appendChild(tdDia);
-
-              const tdEscuela = document.createElement('td');
-              tdEscuela.textContent = evento.escuela;
-              tr.appendChild(tdEscuela);
-
-              const tdHora = document.createElement('td');
-              tdHora.textContent = evento.hora;
-              tr.appendChild(tdHora);
-
-              tbody.appendChild(tr);
-            });
-          });
-        })
-        .catch(() => {
-          const tbody = document.getElementById('escuelasBody');
-          tbody.innerHTML = `<tr><td colspan="3" class="no-escuelas">Error cargando las escuelas.</td></tr>`;
         });
+
+        const tbody = document.getElementById('escuelasBody');
+        tbody.innerHTML = '';
+
+        if (Object.keys(agrupados).length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="no-escuelas">No hay escuelas programadas para esta semana.</td></tr>`;
+          return;
+        }
+
+        let groupIndex = 0;
+        Object.keys(agrupados).sort((a,b) => new Date(a) - new Date(b)).forEach(fechaKey => {
+          const eventos = agrupados[fechaKey];
+          const opcionesDia = { weekday: 'long', day: 'numeric' };
+          let diaFormateado = capitalizeFirstLetter(eventos[0].fechaObj.toLocaleDateString('es-ES', opcionesDia));
+
+          eventos.forEach((evento, idx) => {
+            const tr = document.createElement('tr');
+            tr.classList.add(`day-group-${groupIndex % 2}`);
+
+            if (idx === 0) {
+              const tdDia = document.createElement('td'); 
+              tdDia.textContent = diaFormateado; 
+              tdDia.style.fontWeight='600';
+              tdDia.style.verticalAlign = 'middle';
+              tdDia.rowSpan = eventos.length; 
+              tr.appendChild(tdDia);
+            }
+
+            const tdEstatus = document.createElement('td'); 
+            tdEstatus.textContent = evento.Estatus || '';
+            if (evento.Estatus?.toLowerCase() === 'confirmada') tdEstatus.style.color = 'green';
+            else if (evento.Estatus?.toLowerCase() === 'pendiente') tdEstatus.style.color = 'red';
+            tr.appendChild(tdEstatus);
+
+            const tdEscuela = document.createElement('td'); 
+            tdEscuela.textContent = evento.Escuela; 
+            tr.appendChild(tdEscuela);
+
+            const tdHora = document.createElement('td'); 
+            tdHora.textContent = evento.Hora; 
+            tr.appendChild(tdHora);
+
+            const tdActividad = document.createElement('td'); 
+            tdActividad.textContent = evento.Actividad || ''; 
+            tdActividad.classList.add('actividad'); 
+            tr.appendChild(tdActividad);
+
+            tbody.appendChild(tr);
+          });
+
+          groupIndex++;
+        });
+      }
+
+      renderAgenda(new Date());
+
+      document.getElementById('btnPrevWeek').addEventListener('click', () => {
+        const prevMonday = new Date(currentMonday);
+        prevMonday.setDate(prevMonday.getDate() - 7);
+        renderAgenda(prevMonday);
+      });
+
+      document.getElementById('btnNextWeek').addEventListener('click', () => {
+        const nextMonday = new Date(currentMonday);
+        nextMonday.setDate(nextMonday.getDate() + 7);
+        renderAgenda(nextMonday);
+      });
     });
   </script>
 </body>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Vinculación - Intranet PPR</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: linear-gradient(90deg, #0b4f84, #083b63);
+            color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo img {
+            height: 56px;
+        }
+
+        .usuario {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .usuario .texto {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .usuario #nombreUsuario {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .logout {
+            background: rgba(255, 255, 255, 0.12);
+            border: none;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.3s ease;
+        }
+
+        .logout:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav {
+            background: #fff;
+            border-bottom: 1px solid #e6e9ee;
+        }
+
+        .nav ul {
+            display: flex;
+            list-style: none;
+            gap: 6px;
+            padding: 8px 20px;
+        }
+
+        .nav a {
+            display: block;
+            padding: 10px 16px;
+            color: #0b4f84;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .nav a.activo,
+        .nav a:hover {
+            background: #e9f2ff;
+        }
+
+        .contenido {
+            padding: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .agenda-semanal {
+            margin-bottom: 20px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .agenda-semanal h2 {
+            text-align: center;
+            margin-bottom: 5px;
+            color: #0b4f84;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .agenda-semanal .semana-rango {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #0b4f84;
+            font-weight: 500;
+        }
+
+        .agenda-semanal table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .agenda-semanal th,
+        .agenda-semanal td {
+            padding: 8px 12px;
+            text-align: center;
+            border-bottom: 1px solid #e6e9ee;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .agenda-semanal th {
+            background-color: #f0f4fb;
+            color: #0b4f84;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        td.actividad {
+            white-space: normal;
+            line-height: 1.2em;
+        }
+
+        .day-group-0 td {
+            background-color: #e9f5ff;
+        }
+
+        .day-group-1 td {
+            background-color: #ffffff;
+        }
+
+        .no-escuelas {
+            color: #666;
+            font-style: italic;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .botones-semana {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .botones-semana button {
+            margin-left: 5px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            background: #0b4f84;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .botones-semana button:hover {
+            background: #083b63;
+        }
+
+        .acceso-denegado {
+            text-align: center;
+            font-size: 1.2rem;
+            color: red;
+            padding: 50px 20px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal-content input {
+            width: 80%;
+            padding: 6px 8px;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .modal-content button {
+            margin: 5px;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #0b4f84;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .modal-content button:hover {
+            background: #083b63;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0b4f84;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: none;
+            z-index: 10000;
+            font-weight: 600;
+        }
+
+        /* Calendario mensual */
+        #diasCalendario {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .dia-calendario {
+            min-height: 80px;
+            border: 1px solid #e6e9ee;
+            padding: 4px;
+            background: #fefefe;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            font-size: 0.85rem;
+        }
+
+        .dia-calendario .numero-dia {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .evento-dia {
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+        }
+    </style>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="auth.js"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo"><img src="IMÁGENES/OSC.png" alt="Logo OSC" onerror="this.src='IMÁGENES/default.png'"></div>
+        <div class="usuario" id="usuarioHeader">
+            <div class="texto">
+                <span id="nombreUsuario">Usuario</span>
+                <button id="btnLogout" class="logout" aria-label="Cerrar sesión">Cerrar sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="inicio.html">Inicio</a></li>
+            <li><a href="calendario.html">Calendario</a></li>
+            <li><a href="escuelas.html">Escuelas</a></li>
+            <li><a href="vinculacion.html" class="activo">Vinculación</a></li>
+        </ul>
+    </nav>
+
+    <main class="contenido" id="mainContent">
+        <div id="cargando" style="text-align:center; font-weight:600; color:#0b4f84; margin-top:50px;">Cargando datos, espere...</div>
+    </main>
+
+    <!-- Modal de fecha -->
+    <div class="modal" id="modalFecha">
+        <div class="modal-content">
+            <h3>Cambiar fecha</h3>
+            <input type="date" id="inputFecha" />
+            <div id="modalLabel" style="margin-top:8px;"></div>
+            <div>
+                <button id="btnGuardar">Guardar</button>
+                <button id="btnCancelar">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de estatus -->
+    <div class="modal" id="modalEstatus">
+        <div class="modal-content">
+            <h3>Cambiando estatus, espere...</h3>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
+  const main = document.getElementById('mainContent');
+
+  if (!usuario?.nombre || !usuario?.correo) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  document.getElementById('nombreUsuario').textContent = usuario.nombre;
+
+  document.getElementById('btnLogout').addEventListener('click', () => {
+    if (window.google?.accounts?.id) {
+      try { window.google.accounts.id.disableAutoSelect(); } catch (e) {}
+    }
+    localStorage.removeItem('usuario');
+    window.location.href = 'index.html';
+  });
+
+  if (usuario.rol !== "Vinculacion" && usuario.rol !== "Admin") {
+    main.innerHTML = `<div class="acceso-denegado">No tienes acceso a esta sección.</div>`;
+    return;
+  }
+
+  let data = await fetchCronograma();
+  document.getElementById('cargando').style.display = 'none';
+
+  function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  let currentMonday = null;
+
+  function getMondayAndSunday(date) {
+    const monday = new Date(date);
+    const day = monday.getDay();
+    monday.setDate(monday.getDate() + ((day === 0 ? -6 : 1) - day));
+    monday.setHours(0, 0, 0, 0);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    sunday.setHours(23, 59, 59, 999);
+    return { monday, sunday };
+  }
+
+  function formatSemana(monday, sunday) {
+    if (monday.getMonth() === sunday.getMonth()) {
+      return `del ${monday.getDate()} al ${sunday.getDate()} de ${monday.toLocaleDateString('es-ES', { month: 'long' })}`;
+    } else {
+      return `del ${monday.getDate()} de ${monday.toLocaleDateString('es-ES', { month: 'long' })} al ${sunday.getDate()} de ${sunday.toLocaleDateString('es-ES', { month: 'long' })}`;
+    }
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2500);
+  }
+
+  async function renderAgenda(weekMonday) {
+    const { monday, sunday } = getMondayAndSunday(weekMonday);
+    currentMonday = monday;
+
+    main.innerHTML = `
+      <div class="agenda-semanal">
+        <h2>AGENDA PROGRAMA DE PREVENCIÓN DE RIESGOS 2025</h2>
+        <div class="semana-rango">Semana ${formatSemana(monday,sunday)}</div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Día</th>
+                <th>Confirmación</th>
+                <th>Escuela</th>
+                <th>Hora</th>
+                <th>Actividad</th>
+                <th>Asociación</th>
+              </tr>
+            </thead>
+            <tbody id="escuelasBody">
+              <tr><td colspan="6" class="no-escuelas">Cargando escuelas...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="botones-semana">
+          <button id="btnPrevWeek">◀ Semana anterior</button>
+          <button id="btnNextWeek">Semana siguiente ▶</button>
+        </div>
+      </div>
+      <div id="calendarioMensual" class="agenda-semanal" style="margin-top:30px;">
+        <h2 id="tituloCalendario"></h2>
+        <div id="diasCalendario"></div>
+      </div>
+    `;
+
+    const tbody = document.getElementById('escuelasBody');
+    tbody.innerHTML = '';
+    const agrupados = {};
+
+    data.forEach(item => {
+      const fechaInicio = item.fechaObj;
+      if (!fechaInicio) return;
+      if (fechaInicio >= monday && fechaInicio <= sunday) {
+        const key = fechaInicio.toDateString();
+        if (!agrupados[key]) agrupados[key] = [];
+        agrupados[key].push(item);
+      }
+    });
+
+    if (Object.keys(agrupados).length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="no-escuelas">No hay escuelas programadas para esta semana.</td></tr>`;
+    }
+
+    let groupIndex = 0;
+    Object.keys(agrupados).sort((a, b) => new Date(a) - new Date(b)).forEach(fechaKey => {
+      const eventos = agrupados[fechaKey];
+      const diaFormateado = capitalizeFirstLetter(eventos[0].fechaObj.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric' }));
+
+      eventos.forEach((evento, idx) => {
+        const tr = document.createElement('tr');
+        tr.classList.add(`day-group-${groupIndex % 2}`);
+
+        if (idx === 0) {
+          const tdDia = document.createElement('td');
+          tdDia.textContent = diaFormateado;
+          tdDia.style.fontWeight = '600';
+          tdDia.style.verticalAlign = 'middle';
+          tdDia.rowSpan = eventos.length;
+          tr.appendChild(tdDia);
+        }
+
+        const tdEstatus = document.createElement('td');
+        const btnEstatus = document.createElement('button');
+        btnEstatus.textContent = evento.Estatus || 'Pendiente';
+        btnEstatus.style.cursor = 'pointer';
+        btnEstatus.style.padding = '4px 8px';
+        btnEstatus.style.borderRadius = '6px';
+        btnEstatus.style.border = 'none';
+        btnEstatus.style.color = 'white';
+        btnEstatus.style.backgroundColor = (evento.Estatus?.toLowerCase() === 'confirmada') ? '#024b53' : '#d4ab05';
+        btnEstatus.addEventListener('click', async () => {
+          const modalEstatus = document.getElementById('modalEstatus');
+          modalEstatus.style.display = 'flex';
+          try {
+            const res = await fetch(`https://script.google.com/macros/s/AKfycbzK_hkWCUOgDBSFG_zKRAIOxCDyWrGfyUVqqF4a4ik4Z0URa_gWEP3ZENZaudF2gfbmvg/exec?action=updateStatus&fecha=${evento.fecha}&escuela=${encodeURIComponent(evento.Escuela)}`);
+            const result = await res.json();
+            if (result.success) {
+              btnEstatus.textContent = result.nuevoEstatus;
+              btnEstatus.style.backgroundColor = (result.nuevoEstatus.toLowerCase() === 'confirmada') ? '#024b53' : '#d4ab05';
+            } else {
+              showToast("No se pudo actualizar el estatus");
+            }
+          } catch (e) {
+            console.error(e);
+            showToast("Error al actualizar estatus");
+          } finally {
+            modalEstatus.style.display = 'none';
+          }
+        });
+        tdEstatus.appendChild(btnEstatus);
+        tr.appendChild(tdEstatus);
+
+        // Escuela clickeable para cambiar fecha con modal
+                        const tdEscuela = document.createElement('td');
+                        tdEscuela.textContent = evento.Escuela;
+                        tdEscuela.style.cursor = 'pointer';
+                        tdEscuela.style.color = '#0b4f84';
+                        tdEscuela.style.textDecoration = 'underline';
+                        tdEscuela.addEventListener('click', () => {
+                            const modal = document.getElementById('modalFecha');
+                            const input = document.getElementById('inputFecha');
+                            const label = document.getElementById('modalLabel');
+
+                            const yyyy = evento.fechaObj.getFullYear();
+                            const mm = String(evento.fechaObj.getMonth() + 1).padStart(2, '0');
+                            const dd = String(evento.fechaObj.getDate()).padStart(2, '0');
+                            input.value = `${yyyy}-${mm}-${dd}`;
+                            label.textContent = '';
+                            modal.style.display = 'flex';
+
+                            const btnGuardar = document.getElementById('btnGuardar');
+                            const btnCancelar = document.getElementById('btnCancelar');
+
+                            const guardarHandler = async () => {
+                                label.textContent = "Cambiando fecha...";
+                                try {
+                                    const nuevaFecha = input.value;
+                                    const res = await fetch(`https://script.google.com/macros/s/AKfycbzK_hkWCUOgDBSFG_zKRAIOxCDyWrGfyUVqqF4a4ik4Z0URa_gWEP3ZENZaudF2gfbmvg/exec?action=updateFecha&escuela=${encodeURIComponent(evento.Escuela)}&fecha=${nuevaFecha.split('-').reverse().join('/')}`);
+                                    const result = await res.json();
+                                    if (result.success) {
+                                        // Volver a traer los datos desde el backend
+data = await fetchCronograma(); // fetchCronograma ya lo tienes definido
+renderAgenda(currentMonday);
+showToast("Fecha cambiada con éxito");
+modal.style.display = 'none';
+
+                                        showToast("Fecha cambiada con éxito");
+                                        modal.style.display = 'none';
+                                    } else {
+                                        showToast("No se pudo actualizar la fecha");
+                                    }
+                                } catch (e) {
+                                    console.error(e);
+                                    showToast("Error al actualizar");
+                                }
+
+                                btnGuardar.removeEventListener('click', guardarHandler);
+                                btnCancelar.removeEventListener('click', cancelarHandler);
+                            };
+
+                            const cancelarHandler = () => {
+                                modal.style.display = 'none';
+                                btnGuardar.removeEventListener('click', guardarHandler);
+                                btnCancelar.removeEventListener('click', cancelarHandler);
+                            };
+
+                            btnGuardar.addEventListener('click', guardarHandler);
+                            btnCancelar.addEventListener('click', cancelarHandler);
+                        });
+        tr.appendChild(tdEscuela);
+
+        const tdHora = document.createElement('td');
+        tdHora.textContent = evento.Hora;
+        tr.appendChild(tdHora);
+
+        const tdActividad = document.createElement('td');
+        tdActividad.textContent = evento.Actividad;
+        tdActividad.classList.add('actividad');
+        tr.appendChild(tdActividad);
+
+        const tdAsoc = document.createElement('td');
+        tdAsoc.textContent = evento.asociación;
+        tr.appendChild(tdAsoc);
+
+        tbody.appendChild(tr);
+      });
+
+      groupIndex++;
+    });
+
+    document.getElementById('btnPrevWeek').addEventListener('click', () => {
+      const prevMonday = new Date(currentMonday);
+      prevMonday.setDate(prevMonday.getDate() - 7);
+      renderAgenda(prevMonday);
+    });
+
+    document.getElementById('btnNextWeek').addEventListener('click', () => {
+      const nextMonday = new Date(currentMonday);
+      nextMonday.setDate(nextMonday.getDate() + 7);
+      renderAgenda(nextMonday);
+    });
+
+    renderCalendarioMensual(data);
+  }
+
+  let calendarioMes = new Date().getMonth();
+  let calendarioYear = new Date().getFullYear();
+
+  function renderCalendarioMensual(data) {
+    const contenedor = document.getElementById('diasCalendario');
+    const titulo = document.getElementById('tituloCalendario');
+    contenedor.innerHTML = '';
+    const primerDia = new Date(calendarioYear, calendarioMes, 1);
+    const ultimoDia = new Date(calendarioYear, calendarioMes + 1, 0);
+
+    titulo.textContent = primerDia.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }).toUpperCase();
+
+    if (!document.getElementById('navCalendario')) {
+      const navDiv = document.createElement('div');
+      navDiv.id = 'navCalendario';
+      navDiv.style.display = 'flex';
+      navDiv.style.justifyContent = 'space-between';
+      navDiv.style.marginBottom = '10px';
+
+      const btnPrev = document.createElement('button');
+      btnPrev.textContent = '◀ Mes anterior';
+      btnPrev.style.padding = '6px 12px';
+      btnPrev.style.background = '#0b4f84';
+      btnPrev.style.borderRadius = '6px';
+      btnPrev.style.border = 'none';
+      btnPrev.style.color = 'white';
+      btnPrev.onclick = () => {
+        calendarioMes--;
+        if (calendarioMes < 0) { calendarioMes = 11; calendarioYear--; }
+        renderCalendarioMensual(data);
+      };
+
+      const btnNext = document.createElement('button');
+      btnNext.textContent = 'Mes siguiente ▶';
+      btnNext.style.padding = '6px 12px';
+      btnNext.style.background = '#0b4f84';
+      btnNext.style.borderRadius = '6px';
+      btnNext.style.border = 'none';
+      btnNext.style.color = 'white';
+      btnNext.onclick = () => {
+        calendarioMes++;
+        if (calendarioMes > 11) { calendarioMes = 0; calendarioYear++; }
+        renderCalendarioMensual(data);
+      };
+
+      navDiv.appendChild(btnPrev);
+      navDiv.appendChild(btnNext);
+      titulo.parentNode.insertBefore(navDiv, titulo.nextSibling);
+    }
+
+    const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    diasSemana.forEach(dia => {
+      const div = document.createElement('div');
+      div.textContent = dia;
+      div.style.fontWeight = '600';
+      div.style.textAlign = 'center';
+      contenedor.appendChild(div);
+    });
+
+    const colorAsoc = {
+      'Supera': '#0b4f84',
+      'Mujer con Valor': '#ff69b4',
+      'Akam Surá': '#808080',
+      'CIJ': '#f7931e',
+      'TODAS': '#FF0000'
+    };
+
+    let primerDiaSemana = primerDia.getDay();
+    for (let i = 0; i < primerDiaSemana; i++) contenedor.appendChild(document.createElement('div'));
+
+    for (let d = 1; d <= ultimoDia.getDate(); d++) {
+      const fecha = new Date(calendarioYear, calendarioMes, d);
+      const divDia = document.createElement('div');
+      divDia.classList.add('dia-calendario');
+      const numero = document.createElement('div');
+      numero.classList.add('numero-dia');
+      numero.textContent = d;
+      divDia.appendChild(numero);
+
+      const eventosDia = data.filter(ev => {
+        const evFecha = ev.fechaObj;
+        return evFecha.getFullYear() === fecha.getFullYear() &&
+               evFecha.getMonth() === fecha.getMonth() &&
+               evFecha.getDate() === fecha.getDate();
+      });
+
+      eventosDia.forEach(ev => {
+        const evDiv = document.createElement('div');
+        evDiv.classList.add('evento-dia');
+        evDiv.textContent = ev.Escuela;
+        evDiv.style.textAlign = 'center';
+        evDiv.style.backgroundColor = colorAsoc[ev.asociación] || '#666';
+        divDia.appendChild(evDiv);
+      });
+
+      contenedor.appendChild(divDia);
+    }
+
+    let ultimoDiaSemana = ultimoDia.getDay();
+    let faltan = 6 - ultimoDiaSemana;
+    for (let i = 0; i < faltan; i++) contenedor.appendChild(document.createElement('div'));
+  }
+
+  renderAgenda(new Date());
+});
+</script>
+
+</body>
+
+</html>

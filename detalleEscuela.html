@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Detalle Escuela - Intranet PPR</title>
+  <link rel="icon" type="image/x-icon" href="IMÁGENES/DIF.png" />
+  <style>
+    /* Mismo CSS que en Dashboard */
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family:'Poppins', Arial, sans-serif; background:#f4f6f8; color:#222; padding-bottom:60px; }
+    .header{display:flex;justify-content:space-between;align-items:center;padding:3px 24px;background:linear-gradient(90deg,#0b4f84,#083b63);color:white;box-shadow:0 3px 10px rgba(0,0,0,0.08);}
+    .logo img{height:56px;}
+    .usuario{display:flex;align-items:center;gap:12px;}
+    .usuario .texto{display:flex;align-items:center;gap:12px;}
+    .usuario #nombreUsuario{font-weight:600;color:#fff;}
+    .logout{background:rgba(255,255,255,0.12);border:none;color:#fff;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:0.85rem;transition:background 0.3s ease;}
+    .logout:hover{background:rgba(255,255,255,0.2);}
+    .nav{background:#fff;border-bottom:1px solid #e6e9ee;}
+    .nav ul{display:flex;list-style:none;gap:6px;padding:6px 20px;}
+    .nav a{display:block;padding:10px 16px;color:#0b4f84;text-decoration:none;border-radius:8px;font-weight:600;}
+    .nav a.activo,.nav a:hover{background:#e9f2ff;}
+    .contenido{padding:30px;max-width:1100px;margin:0 auto;}
+    .card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);padding:20px;margin-bottom:20px;}
+    .card h2{font-size:1.2rem;margin-bottom:12px;color:#0b4f84;}
+    .card p{font-size:0.95rem;margin-bottom:16px;color:#555;}
+    table{width:100%;border-collapse:collapse;margin-top:10px;}
+    table th, table td{border:1px solid #ddd;padding:8px;text-align:left;}
+    table th{background:#f0f4fa;color:#0b4f84;}
+    .footer{position:fixed;bottom:0;width:100%;background:linear-gradient(90deg,rgba(11,79,132,0.9),rgba(8,59,99,0.9));padding:8px 20px;z-index:100;}
+    .footer .LogosDonantes{max-width:1100px;margin:0 auto;text-align:center;}
+    .footer .logos{display:inline-flex;align-items:center;justify-content:center;gap:12px;}
+    .footer .logos img{height:28px;filter:brightness(0) invert(1);}
+    .footer .logos p{font-size:0.85rem;color:#fff;margin:0;}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo"><img src="IMÁGENES/OSC.png" alt="Logo OSC" onerror="this.src='IMÁGENES/default.png'"></div>
+    <div class="usuario" id="usuarioHeader">
+      <div class="texto">
+        <span id="nombreUsuario">Usuario</span>
+        <button id="btnLogout" class="logout">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <ul>
+      <li><a href="inicio.html">Inicio</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="detalleEscuela.html" class="activo">Detalle Escuela</a></li>
+    </ul>
+  </nav>
+
+  <main class="contenido">
+    <h1>🏫 Detalle de la Escuela</h1>
+    <div class="card">
+      <h2>Información General</h2>
+      <p><strong>Nombre:</strong> Técnica 78</p>
+      <p><strong>Asociación:</strong> Supera A.C.</p>
+      <p><strong>Ubicación:</strong> Saltillo, Coahuila</p>
+    </div>
+
+    <div class="card">
+      <h2>Eventos Programados</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Actividad</th>
+            <th>Hora</th>
+            <th>Asistentes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>13/08/2025</td>
+            <td>Taller de prevención</td>
+            <td>9:00</td>
+            <td>120</td>
+          </tr>
+          <tr>
+            <td>20/08/2025</td>
+            <td>Sesión de seguimiento</td>
+            <td>11:00</td>
+            <td>95</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <section class="LogosDonantes">
+      <div class="logos">
+        <p>Programa financiado por:</p>
+        <img src="IMÁGENES/FECHAC.png" alt="Donantes" />
+      </div>
+    </section>
+  </footer>
+</body>
+</html>
