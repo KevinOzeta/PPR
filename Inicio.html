@@ -198,8 +198,8 @@
   <nav class="nav">
     <ul>
       <li><a href="inicio.html" class="activo">Inicio</a></li>
-       <li><a href="vinculacion.html">Vinculación</a></li>
-        <li><a href="dashboard.html">Seguimiento</a></li>
+      <li id="menuVinculacion" style="display:none;"><a href="vinculacion.html">Vinculación</a></li>
+      <li id="menuDashboard" style="display:none;"><a href="dashboard.html">Seguimiento</a></li>
     </ul>
   </nav>
 
@@ -240,7 +240,6 @@
       <div class="logos">
         <p>Programa financiado por:</p>
         <img src="IMÁGENES/FECHAC.png" alt="Donantes" />
-        
       </div>
     </section>
   </footer>
@@ -256,6 +255,12 @@
 
       document.getElementById('nombreUsuario').textContent = usuario.nombre;
       document.getElementById('saludo').textContent = `Hola, ${usuario.nombre} 👋`;
+
+      // 👉 Mostrar menús solo si el rol es admin
+      if (usuario.rol && usuario.rol.toLowerCase() === "admin") {
+        document.getElementById('menuVinculacion').style.display = "list-item";
+        document.getElementById('menuDashboard').style.display = "list-item";
+      }
 
       document.getElementById('btnLogout').addEventListener('click', () => {
         if (window.google?.accounts?.id) {

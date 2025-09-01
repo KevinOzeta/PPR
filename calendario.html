@@ -68,8 +68,8 @@
   <nav class="nav">
     <ul>
       <li><a href="inicio.html">Inicio</a></li>
-      <li><a href="vinculacion.html" >Vinculación</a></li>
-       <li><a href="dashboard.html">Seguimiento</a></li>
+      <li id="menuVinculacion" style="display:none;"><a href="vinculacion.html">Vinculación</a></li>
+      <li id="menuDashboard" style="display:none;"><a href="dashboard.html">Seguimiento</a></li>
     </ul>
   </nav>
 
@@ -117,6 +117,12 @@
       document.getElementById('nombreUsuario').textContent = usuario.nombre;
       document.getElementById('tituloAgenda').textContent = `Agenda Semanal de ${usuario.asociacion}`;
 
+      // 👉 Mostrar menús solo si el rol es admin
+      if (usuario.rol && usuario.rol.toLowerCase() === "admin") {
+        document.getElementById('menuVinculacion').style.display = "list-item";
+        document.getElementById('menuDashboard').style.display = "list-item";
+      }
+
       document.getElementById('btnLogout').addEventListener('click', () => {
         if (window.google?.accounts?.id) { try { window.google.accounts.id.disableAutoSelect(); } catch(e){} }
         localStorage.removeItem('usuario'); window.location.href = 'index.html';
@@ -132,11 +138,11 @@
         const day = monday.getDay();
         const diff = (day === 0 ? -6 : 1) - day;
         monday.setDate(monday.getDate() + diff);
-        monday.setHours(0,0,0,0); // inicio de lunes
+        monday.setHours(0,0,0,0);
 
         const sunday = new Date(monday);
         sunday.setDate(monday.getDate() + 6);
-        sunday.setHours(23,59,59,999); // fin de domingo
+        sunday.setHours(23,59,59,999);
 
         return { monday, sunday };
       }
@@ -152,21 +158,19 @@
       function renderAgenda(weekMonday) {
         const { monday, sunday } = getMondayAndSunday(weekMonday);
         currentMonday = monday;
-
         document.getElementById('rangoSemana').textContent = formatSemana(monday, sunday);
 
         const agrupados = {};
         data.forEach(item => {
           if (
-  normalize(usuario.asociacion) !== "dif municipal" && 
-  item['asociación'] && 
-  normalize(item['asociación']) !== normalize(usuario.asociacion)
-) {
-  return;
-}
+            normalize(usuario.asociacion) !== "dif municipal" && 
+            item['asociación'] && 
+            normalize(item['asociación']) !== normalize(usuario.asociacion)
+          ) return;
+
           const fechaInicio = item.fechaObj;
           if (!fechaInicio) return;
-          if (fechaInicio >= monday && fechaInicio <= sunday) { // eliminamos exclusión del domingo
+          if (fechaInicio >= monday && fechaInicio <= sunday) {
             const key = fechaInicio.toDateString();
             if (!agrupados[key]) agrupados[key] = [];
             agrupados[key].push(item);
